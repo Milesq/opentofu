@@ -134,7 +134,7 @@ func (m *Meta) addVarsFromDir(currDir string, ret map[string]backend.UnparsedVar
 		// "infos" is already sorted by name, so we just need to filter it here.
 		for _, info := range infos {
 			name := info.Name()
-			if !isAutoVarFile(name) {
+			if !m.isAutoVarFile(name) {
 				continue
 			}
 			moreDiags := m.addVarsFromFile(filepath.Join(currDir, name), tofu.ValueFromAutoFile, ret)

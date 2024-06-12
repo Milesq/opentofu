@@ -804,9 +804,16 @@ func (m *Meta) SetWorkspace(name string) error {
 }
 
 // isAutoVarFile determines if the file ends with .auto.tfvars or .auto.tfvars.json
-func isAutoVarFile(path string) bool {
+func (m *Meta) isAutoVarFile(path string) bool {
+	workspace, err := m.Workspace()
+	if err != nil {
+		panic(err)
+	}
+
 	return strings.HasSuffix(path, ".auto.tfvars") ||
-		strings.HasSuffix(path, ".auto.tfvars.json")
+		strings.HasSuffix(path, ".auto.tfvars.json") ||
+		strings.HasSuffix(path, fmt.Sprintf("auto.%s.tfvars", workspace)) ||
+		strings.HasSuffix(path, fmt.Sprintf("auto.%s.tfvars.json", workspace))
 }
 
 // FIXME: as an interim refactoring step, we apply the contents of the state
